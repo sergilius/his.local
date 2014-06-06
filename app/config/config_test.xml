@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <DBHostAddress>localhost</DBHostAddress>
-    <DBPort>3306</DBPort>
-    <Database>bat</Database>
-    <DBUserName>root</DBUserName>
-    <DBUserPassword></DBUserPassword>
-</Settings>
