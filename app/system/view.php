@@ -6,14 +6,14 @@ class view {
         return file_get_contents($file_path);
     }
 
-    public static function includ_file($file_path, $content='') {
+    public static function includ_file($file_path, $data = '') {
         include_once $file_path;
     }
-    
+
     public static function ajax_view($data, $id_title) {
 
         switch ($id_title) {
-             case 200:
+            case 200:
                 $titel_header = 'HTTP/1.1 200 OK';
                 break;
             case '400':
@@ -24,7 +24,7 @@ class view {
                 break;
         }
         $result_str = json_encode($data);
-        
+
 //        $titel_header = 'HTTP/1.1 200 OK';
         header($titel_header);
         $json_data = json_encode($data);

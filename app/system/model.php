@@ -1,14 +1,11 @@
 <?php  if ( ! defined('READFILE')) exit('No direct script access allowed');
 
-if (!defined('READFILE'))
-    exit('No direct script access allowed');
-
 class model {
 
     public static $dbh;
 
     protected static function conect_start() {
-        $path_config = 'app/config/config_test.xml';
+        $path_config = 'app/config/config.xml';
 
         if (file_exists($path_config)) {
             $db_config = simplexml_load_file($path_config);
@@ -23,6 +20,27 @@ class model {
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+    }
+    
+//$arr_data массив вида:
+//Array
+//(
+//    [0] => Array([0] => aaa, [1] => bbb, [2] => ccc, [3] => ddd)
+//    [1] => Array([0] => aaa, [1] => bbb, [2] => ccc, [3] => ddd)
+//)
+//$query_sql = "INSERT INTO table_name (col_a, col_b, col_c, col_d) values (?, ?, ?, ?);  
+
+    public static function set_values($query_sql, $arr_data) {
+        self::conect_start();
+
+        $sth = self::$dbh->prepare($query_sql);
+        $response = '';
+        foreach ($arr_data as $value) {
+            $response += $sth->execute($value);
+            $arr_error = $sth->errorInfo();
+            $arr_error[2] ? print_r($arr_error[2]) : '';   // вывод ошибки
+        }
+        return $response;
     }
 
     public static function get_result($query_sql, $query_type, $data_sql = FALSE, $fetch_type = FALSE) {
@@ -64,7 +82,6 @@ class model {
                 $arr_error[2] ? print_r($arr_error[2]) : '';   // вывод ошибки
                 break;
             case 'select_one':
-
                 $sth = self::$dbh->prepare($query_sql);
                 $sth->execute();
                 if ($fetch_type) {
@@ -72,7 +89,6 @@ class model {
                 } else {
                     $response = $sth->fetch(PDO::FETCH_ASSOC);
                 }
-
                 $arr_error = self::$dbh->errorInfo();
                 $arr_error[2] ? print_r($arr_error[2]) : '';
                 break;
@@ -87,4 +103,6 @@ class model {
     }
 
 }
+
+/* End of file  */
 

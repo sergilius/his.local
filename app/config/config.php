@@ -5,10 +5,13 @@
 //$file_controlerPath = 'controllers/file_controler.php';
 $catalogControllerPath = 'app/controllers/catalog_controller.php';
 $controllerPath = 'app/system/controller.php';
+$converjsonController = 'app/controllers/converjson_controller.php';
 $corePath = 'app/system/view.php';
 $modelPath = 'app/system/model.php';
-$catalogModel = 'app/models/catalog_model.php';
 $commonModel = 'app/models/common_model.php';
+$catalogModel = 'app/models/catalog_model.php';
+$converjsonModel = 'app/models/converjson_model.php';
+
 
 
 
