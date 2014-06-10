@@ -4,23 +4,36 @@ class page_controller extends controller {
 
     public static function index($target) {
 
-echo 'index'."\n";
-echo 'index 11 '.$target."\n";
-        $arr_url = explode("/", $_SERVER['REQUEST_URI']);
+//echo 'index'."\n";
+//echo 'index 11 '.$target."\n";
 
-//        if (!strlen($arr_match[1]) or $arr_match[1] == 'index.php') {
+//        $data = page_model::get_page($target);
+        list($data['title_page'], $data['content']) = page_model::get_page($target);
+        list($data['menu_header'], $data['menu_footer']) = common_model::get_menus($target);
+        self::render($data);
+
+//        $data['title_page'] = catalog_model::get_title();
+//        list($data['menu_header'], $data['menu_footer']) = common_model::get_menus(FALSE);
+//        $data['list_phones'] = catalog_model::get_list_phones();
+
+//        self::render($data);
         
-if(count($arr_url) == 4 and $target == 'page'){
-            $content = self::view('first_page', TRUE);
-echo 'count'. "\n";
-        } else {
-            $content = self::view('error404', TRUE);
-        }
-        self::render($content);
+//        $arr_url = explode("/", $_SERVER['REQUEST_URI']);
+//
+////        if (!strlen($arr_match[1]) or $arr_match[1] == 'index.php') {
+//        
+//if(count($arr_url) == 4 and $target == 'page'){
+//            $content = self::view('first_page', TRUE);
+//echo 'count'. "\n";
+//        } else {
+//            $content = self::view('error404', TRUE);
+//        }
+//        self::render($content);
     }
 
-    protected static function render($content) {
-        self::view('page_view', FALSE, $content);
+    protected static function render($data) {
+//        self::view('page_view', FALSE, $content);
+        self::view('page_view', FALSE, $data);
     }
 
     public static function ajax_data() {

@@ -18,11 +18,22 @@ if (count($arr_url) == 2 or ( isset($arr_url[3]) and $arr_url[3] == 'index.php')
     require_once $catalogControllerPath;
     require_once $catalogModel;
     catalog_controller::index();
-}elseif (( isset($arr_url[1]) and $arr_url[1] == 'converjson') and ( isset($arr_url[2]) and $arr_url[2] == 'phones_preview')) {
-    require_once $converjsonController;
-    require_once $converjsonModel;
-    converjson_controller::phones_preview();
-    
+//}elseif (( isset($arr_url[1]) and $arr_url[1] == 'converjson') and ( isset($arr_url[2]) and $arr_url[2] == 'phones_preview')) {
+}elseif (isset($arr_url[1]) and isset($arr_url[2])) {
+    switch ($arr_url[1]) {
+        case 'converjson':
+            if ($arr_url[2] == 'phones_preview') {
+                require_once $converjsonController;
+                require_once $converjsonModel;
+                converjson_controller::phones_preview();
+            }
+            break;
+        case 'page':
+                require_once $pageController;
+                require_once $pageModel;
+                page_controller::index($arr_url[2]);
+            break;
+    }
 }else{
     echo'not found';
 }

@@ -3,7 +3,7 @@
 class common_model extends model {
 
     public static function get_menus($page_name = FALSE) {
-        
+
         $query_type = 'select_order';
         $arr_table['table'] = 'menu';
         $arr_table['filds'] = 'title_name, aliase, path';
@@ -13,7 +13,7 @@ class common_model extends model {
         $arr_table['start'] = FALSE;
         $arr_table['limit'] = FALSE;
         $fetch_type = FALSE;
-                
+
         $arr_result = self::select_order($query_type, $arr_table, $fetch_type);
 
         $box_top = '';
@@ -26,12 +26,12 @@ class common_model extends model {
             }
             $box_bottom .= '<a href="/page' . $arr_data['path'] . '">' . $arr_data['title_name'] . '</a>' . "\n";
         }
-        
+
         return array($box_top, $box_bottom);
     }
-    
+
     public static function select_order($query_type, $arr_table, $fetch_type = FALSE) {
-        
+
         $data_sql = FALSE;
         $query = "SELECT " . $arr_table['filds'] . " FROM " . $arr_table['table'];
 
@@ -47,16 +47,23 @@ class common_model extends model {
             $query .= " LIMIT " . $arr_table['limit'];
         }
 //echo $query;
-        
+
 //$arr_result = self::get_result($query, $query_type, $data_sql, $fetch_type);
 //print_r($arr_result);
         return self::get_result($query, $query_type, $data_sql, $fetch_type);
     }
-    
+
     public static function set_insert($table, $fields, $mask, $arr_data) {
         $query_sql = "INSERT INTO " . $table . " " . $fields . " values " . $mask;
         $result = model::set_values($query_sql, $arr_data);
 //print_r($result);
+    }
+
+    public static function select_one($arr_data, $query_type, $data_sql, $fetch_type) {
+
+        $query = "SELECT " . $arr_data['filds'] . " FROM " . $arr_data['table'] . " WHERE " . $arr_data['where'];
+//        $result = self::get_result($query, $query_type, $data_sql, $fetch_type);
+        return self::get_result($query, $query_type, $data_sql, $fetch_type);
     }
 
 }

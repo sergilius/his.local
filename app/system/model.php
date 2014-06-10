@@ -21,14 +21,14 @@ class model {
             echo $e->getMessage();
         }
     }
-    
+
 //$arr_data массив вида:
 //Array
 //(
 //    [0] => Array([0] => aaa, [1] => bbb, [2] => ccc, [3] => ddd)
 //    [1] => Array([0] => aaa, [1] => bbb, [2] => ccc, [3] => ddd)
 //)
-//$query_sql = "INSERT INTO table_name (col_a, col_b, col_c, col_d) values (?, ?, ?, ?);  
+//$query_sql = "INSERT INTO table_name (col_a, col_b, col_c, col_d) values (?, ?, ?, ?);
 
     public static function set_values($query_sql, $arr_data) {
         self::conect_start();

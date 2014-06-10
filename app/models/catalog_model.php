@@ -3,7 +3,6 @@
 class catalog_model extends model {
 
     public static function get_title(){
-
         $arr_data['filds'] = 'title_page';
         $arr_data['table'] = 'catalog';
         $query_type = 'select_one';
@@ -15,50 +14,41 @@ class catalog_model extends model {
         return $result[0];
     }
 
-    private static function select_one($arr_data, $query_type, $data_sql, $fetch_type){
+    public static function get_list_phones() {
+        $query_type = 'select_order';
+        $arr_data['filds'] = FALSE;
+        $arr_data['table'] = 'phones_preview';
+        $arr_data['where'] = FALSE;
+        $arr_data['sort'] = 'name';
+        $arr_data['dir'] = 'ASC';
+        $arr_data['start'] = FALSE;
+        $arr_data['limit'] = FALSE;
+        $arr_phones = self::select_where_order_limit($query_type, $arr_data, $fetch_type = FALSE);
+        return self::forming_list_phones($arr_phones);
+    }
 
-        $query = "SELECT " . $arr_data['filds']. " FROM " . $arr_data['table'] . " WHERE " . $arr_data['where'];
+    public static function forming_list_phones($arr_phones) {
+        $box_phones = '<ul class="phones">' . "\n";
+        foreach ($arr_phones as $value) {
+            $phohe_card_path = 'catalog/card/' . $value['id'];
+            $box_phones .= '    <li class="thumbnail phone-listing" >
+        <a class="thumb" href="' . $phohe_card_path . '"> <!-- id + path -->
+            <img src="' . $value['imageUrl'] . '"> <!-- img -->
+        </a>
+        <a href="' . $phohe_card_path . '">' . $value['name'] . '</a> <!--  -->
+        <p>' . $value['snippet'] . '</p>
+    </li>' . "\n";
+        }
+        $box_phones .= "</ul>\n";
+        return $box_phones;
+    }
+
+    private static function select_one($arr_data, $query_type, $data_sql, $fetch_type) {
+
+        $query = "SELECT " . $arr_data['filds'] . " FROM " . $arr_data['table'] . " WHERE " . $arr_data['where'];
 //        $result = self::get_result($query, $query_type, $data_sql, $fetch_type);
         return self::get_result($query, $query_type, $data_sql, $fetch_type);
 
-    }
-
-    public static function ajax_region($file_name, $arr_json) {
-        $file_path = 'app/data/' . $file_name . '.php';
-        include_once $file_path;
-        $i = 0;
-        $arr_region = array();
-        foreach ($select_data[$arr_json['region']] as $key => $value) {
-            $arr_region[$i] = $key;
-            $i += 1;
-        }
-        return $arr_region;
-    }
-
-    public static function ajax_street($file_name, $term) {
-        $file_path = 'app/data/' . $file_name . '.php';
-        include_once $file_path;
-
-        $arr_street = array();
-        foreach ($select_data as $region) {
-            foreach ($region as $hestate) {
-                foreach ($hestate as $street) {
-                    $str_street = mb_strtolower($street, 'UTF-8');
-                    if (substr_count($str_street, $term)) {
-                        $arr_street[] = $street;
-                    }
-                }
-            }
-        }
-        return $arr_street;
-    }
-
-    public static function ajax_form($arr_json) {
-        foreach ($arr_json as $obj_json) {
-            $arr_tmp = (array) $obj_json;
-            $arr_form[$arr_tmp['name']] = $arr_tmp['value'];
-        }
-        return $arr_form;
     }
 
     public static function select_where_order_limit($query_type, $arr_data, $fetch_type = FALSE) {
@@ -92,51 +82,6 @@ class catalog_model extends model {
       return self::get_result($query, $query_type, $data_sql, $fetch_type);
     }
 
-    public static function update_formwin($query_type, $arr_data, $arr_set) {
-        $query = "UPDATE " . $arr_data['table'];
-        $query .=" SET ";
-        $query .= self::equality_formation($arr_set);
-        $query .=" WHERE " . $arr_data['where'] . "; ";   // ------ $arr_data['where'] -- $arr_data['limit'] ----$arr_data[ORDER BY]
-
-        $data_sql = FALSE;
-        $fetch_type = FALSE;
-//echo $query;
-        return self::get_result($query, $query_type, $data_sql, $fetch_type);
-    }
-
-    public static function insert_formwin($query_type, $arr_data, $arr_set) {
-        $query = "INSERT INTO " . $arr_data['table'];
-        $query .=" SET ";
-        $query .= self::equality_formation($arr_set);
-        if($arr_data['table'] == 'log'){
-            $query .= ", edate=NOW() ";
-        }
-//        $query .= ($arr_data['table'] == 'log') ? ($query .= ", edate=NOW() ") : '';
-//        $query .= ($arr_data['table'] == 'log') ? (", edate=NOW() ") : '';
-//        $query = "INSERT INTO template SET name='3d3d', descr='d3d3', source='C:/TEMP/1var.jpg', market_id='1', spec_id='1', type_id='1'";
-        $data_sql = FALSE;
-        $fetch_type = FALSE;
-//echo $query;
-        return self::get_result($query, $query_type, $data_sql, $fetch_type);
-    }
-
-    public static function delete_formwin($query_type, $arr_data) {
-        $query = "DELETE FROM " . $arr_data['table'] . " WHERE id='" . $arr_data['delete'] . "'";
-        $data_sql = FALSE;
-        $fetch_type = FALSE;
-        return self::get_result($query, $query_type, $data_sql, $fetch_type);
-    }
-
-    protected static function equality_formation($arr_set) {
-        $i = 0;
-        $query = '';
-        foreach ($arr_set as $key => $value) {
-            if ($i) {$query .= ", ";}
-            $query .= $key . "='" . $value . "'";
-            $i++;
-        }
-        return $query;
-    }
 
 }
 

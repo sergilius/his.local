@@ -45,6 +45,10 @@ body {
     /*line-height: 10px;*/
 }
 
+.header-logo a {
+    color: #FFFFFF;
+}
+
 .header-center {
     height: 132px;
 }
@@ -141,7 +145,7 @@ ul.phones  {
 }
 #footer .container {
     padding: 0;
-    width: 450px;
+    width: 500px;
     margin-top: 20px;
 }
 .footer-linx a {
